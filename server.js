@@ -76,6 +76,41 @@ io.sockets.on('connection', function (socket) {
 	  	console.log("rotate left fin to",move);
 	  	robot.rotateLeftFin(move);
 	  }
+	  if(message.command == "right")
+	  {
+	  	var move = message.value;
+	  	console.log("rotate right fin to",move);
+	  	robot.rotateRightFin(move);
+	  }
+	  
+	  
+	  if(message.command == "caudSeg1")
+	  {
+	  	var move = message.value;
+	  	console.log("rotate caudal fin segment1 to",move);
+	  	robot.rotateCaudalSeg1(move);
+	  }
+	  if(message.command == "caudSeg2")
+	  {
+	  	var move = message.value;
+	  	console.log("rotate caudal fin segment2 to",move);
+	  	robot.rotateCaudalSeg2(move);
+	  }
+	  
+	  
+	  if(message.command == "turn")
+	  {
+	  	var move = message.value;
+	  	console.log("turning",move);
+	  	robot.turn(move);
+	  }
+	  
+	  if(message.command == "dive")
+	  {
+	  	var move = message.value;
+	  	console.log("diving",move);
+	  	robot.dive(move);
+	  }
 	  //socket.broadcast.emit('message', data);
 	});
 

@@ -1,12 +1,13 @@
 var socket = io.connect();
 
-function blabla(value) {
+function sendMessage(command, value) {
 	
-	console.log("blabla",value)
+	console.log("Message",value)
 	
-	socket.emit('message', {command:"left",value:value});
+	socket.emit('message', {command:command, value:value});
 }
 
+/*
 function addMessage(msg, pseudo) {
    $("#chatEntries").append('<div class="message"><p>' + pseudo + ' : ' + msg + '</p></div>');
 }
@@ -30,7 +31,7 @@ function setPseudo() {
       $('#pseudoSet').hide();
    }
 }
-
+*/
 socket.on('message', function(data) {
    addMessage(data['message'], data['pseudo']);
 });
