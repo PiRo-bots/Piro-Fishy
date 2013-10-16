@@ -29,9 +29,11 @@ class Servo
 class Robot
   constructor:->
     #actuators
-    @pwm = new PwmDriver(0x40)
-    @pwm.setPWMFreq(60) # Set frequency to 60 Hz  
-  
+    try
+      @pwm = new PwmDriver(0x40)
+      @pwm.setPWMFreq(60) # Set frequency to 60 Hz  
+    catch error
+    
     @leftFin = new Servo(@pwm,0)
     @rightFin = new Servo(@pwm,1)
     

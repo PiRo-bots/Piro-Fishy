@@ -18,7 +18,14 @@ app.get('/', function(req, res){
 //for M-jpeg streaming
 /*
 fs = require('fs')
-fs.mkdirSync('/tmp/stream')
+
+if not fs.existsSync('/tmp/stream'){
+	fs.mkdirSync('/tmp/stream')
+}
+var spawn = require('child_process').spawn;
+var exec = require('child_process').exec,
+
+var ls    = spawn('ls', ['-lh', '/usr']);
 
 app.get('/eyes.mjpeg', function(request, res) {
   res.writeHead(200, {
@@ -52,6 +59,11 @@ app.get('/eyes.mjpeg', function(request, res) {
 });
 
 */
+
+//video streaming
+//raspistill -w 320 -h 240 -q 65 -o /tmp/stream/pic.jpg -tl 20 -t 9999999 -th 0:0:0 &
+//LD_LIBRARY_PATH=./ ./mjpg_streamer -i "input_file.so -f /tmp/stream" -o "output_http.so -w ./www"
+
 
 //for controls & sensors
 require('coffee-script');
