@@ -1,0 +1,7 @@
+<polymer-element name="servo-control" extends="div" attributes="show value step min max" tabindex="0">
+        <template>
+                <div id="stats" hidden?="{{!show}}"></div>
+                <input type="range" value="0" step="0.1" min="-60" max="60"/>
+        </template>
+        <script src="three-stats.js"></script>
+</polymer-element>

@@ -1,5 +1,12 @@
 var socket = io.connect();
 
+function blabla(value) {
+	
+	console.log("blabla",value)
+	
+	socket.emit('message', {command:"left",value:value});
+}
+
 function addMessage(msg, pseudo) {
    $("#chatEntries").append('<div class="message"><p>' + pseudo + ' : ' + msg + '</p></div>');
 }
