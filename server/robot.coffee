@@ -26,6 +26,30 @@ class Servo
     @pwm.setPWM(@channel,0, pulse)
     
 
+class Light
+  constructor:(pwm, channel)->
+    @pwm = pwm
+    @channel = channel or 0
+    @minPulse = 0 # Min pulse length out of 4096
+    @maxPulse = 4095 # Max pulse length out of 4096
+    @minIntensity= 0
+    @maxIntensity = 512
+  
+  setIntensity:(intensity)->
+    console.log("set light at channel #{@channel} to #{intensity}")
+    clampedIntensity = Math.max(@minIntensity,Math.min(intensity,@maxIntensity))
+    pulseRange = @maxPulse - @minPulse
+    intensityRange = @maxIntensity - @minIntensity
+    
+    pulse = (clampedIntensity-@minIntensity)/intensityRange * pulseRange + @minPulse
+    
+    if @debug
+      console.log("clamped", clampedIntensity)
+      console.log("pulseRange",pulseRange,"intensityRange",intensityRange)
+      console.log("pulse", pulse)
+    
+    @pwm.setPWM(@channel,0, pulse)
+
 class Robot
   constructor:->
     #actuators
@@ -40,6 +64,8 @@ class Robot
     @caudalSeg1 = new Servo(@pwm,2)
     @caudalSeg2 = new Servo(@pwm,3)
     
+    @headLight = new Light(@pwm,4)
+    
     #sensors
     #@imu = new AltImu10()
     @init()
@@ -48,6 +74,7 @@ class Robot
     #set to neutral
     @leftFin.rotate( 0 )
     @rightFin.rotate( 0 )
+    @headLight.setIntensity( 0 )
   
   rotateLeftFin:(amount)->
     @leftFin.rotate( amount )
@@ -60,6 +87,9 @@ class Robot
   
   rotateCaudalSeg2:( toAngle )->
     @caudalSeg2.rotate( toAngle )
+    
+  setLight:(intensity)->
+    @headLight.setIntensity( intensity )
   
   #'meta' controls
   swim:(amount)->

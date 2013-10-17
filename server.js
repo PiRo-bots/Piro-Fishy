@@ -109,6 +109,13 @@ io.sockets.on('connection', function (socket) {
 	  	robot.rotateCaudalSeg2(move);
 	  }
 	  
+	   if(message.command == "headLight")
+	  {
+	  	var intensity = message.value;
+	  	console.log("seting light intensity",intensity);
+	  	robot.setLight(intensity);
+	  }
+	  
 	  
 	  if(message.command == "turn")
 	  {
