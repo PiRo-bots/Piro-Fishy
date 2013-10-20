@@ -80,6 +80,11 @@ io.sockets.on('connection', function (socket) {
 	   socket.set('pseudo', data);
 	});
 
+	socket.on('rotation', function (message) {
+	  console.log("rotation: " , message);
+    rotateHead(message.x,message.y);
+	});
+
 	socket.on('message', function (message) {
 	  console.log("we got sent this : " , message);
 	  if(message.command == "left")

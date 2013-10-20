@@ -50,6 +50,51 @@ class Light
     
     @pwm.setPWM(@channel,0, pulse)
 
+class PanTiltHead
+  constructor:(pwm, channelRoll, channelPitch)->
+    @pwm = pwm
+    @channelRoll = channelRoll or 0
+    @channelPitch = channelPitch or 0
+
+    @minPulse = 150 # Min pulse length out of 4096
+    @maxPulse = 600 # Max pulse length out of 4096
+    @minAngle = -60
+    @maxAngle = 60
+  
+  rotate:(toAngleR, toAngleP)->
+    #rotate first axis
+    console.log("rotate camera servo at channel #{@channelRoll} to #{toAngleR}")
+    
+    clampedAngleR = Math.max(@minAngle,Math.min(toAngleR,@maxAngle))
+    pulseRange = @maxPulse - @minPulse
+    angleRange = @maxAngle - @minAngle
+    
+    pulse = (clampedAngleR-@minAngle)/angleRange * pulseRange + @minPulse
+    
+    if @debug
+      console.log("clamped", clampedAngleR)
+      console.log("pulseRange",pulseRange,"angleRange",angleRange)
+      console.log("pulse", pulse)
+    @pwm.setPWM(@channelRoll,0, pulse)
+
+    #rotate second axis
+    console.log("rotate camera servo at channel #{@channelPitch} to #{toAngleP}")
+
+    clampedAngleP = Math.max(@minAngle,Math.min(toAngleP,@maxAngle))
+    pulseRange = @maxPulse - @minPulse
+    angleRange = @maxAngle - @minAngle
+    
+    pulse = (clampedAngleP-@minAngle)/angleRange * pulseRange + @minPulse
+    
+    if @debug
+      console.log("clamped", clampedAngleP)
+      console.log("pulseRange",pulseRange,"angleRange",angleRange)
+      console.log("pulse", pulse)
+    
+    @pwm.setPWM(@channelPitch,0, pulse)
+
+
+
 class Robot
   constructor:->
     #actuators
@@ -65,6 +110,8 @@ class Robot
     @caudalSeg2 = new Servo(@pwm,3)
     
     @headLight = new Light(@pwm,4)
+
+    @panTiltHead = new PanTiltHead( @pwm, 5, 6 )
     
     #sensors
     #@imu = new AltImu10()
@@ -75,6 +122,7 @@ class Robot
     @leftFin.rotate( 0 )
     @rightFin.rotate( 0 )
     @headLight.setIntensity( 0 )
+    @panTiltHead.rotate(0,0)
   
   rotateLeftFin:(amount)->
     @leftFin.rotate( amount )
@@ -87,6 +135,9 @@ class Robot
   
   rotateCaudalSeg2:( toAngle )->
     @caudalSeg2.rotate( toAngle )
+
+  rotateHead:( angleR, angleP)->
+    @panTiltHead.rotate(angleR,angleP)
     
   setLight:(intensity)->
     @headLight.setIntensity( intensity )
