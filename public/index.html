@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/script.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="vendor/polymer/polymer.min.js"></script>
+    <!--<script src="/socket.io/socket.io.js"></script>
+	<script src="/script.js"></script>-->
+
+	<!-- Load custom elements -->
+	<!--<link rel="import" href="elements/web-socket/web-socket.html">-->
+	<link rel="import" href="elements/accel-compass/accel-compass.html">
+	<link rel="import" href="elements/stereo-img/stereo-img.html">
   </head>
   <body>
   	<!--Make Each of these a custom (html) element?-->
@@ -21,11 +26,14 @@
   			<input type="range" value="0" step="0.1" min="-60" max="60" onchange="sendMessage('dive', this.value)"/>
   		</div>
   	</div>
+	
+	<!--stream accelerometer data when used from a device which supports it-->
+	<accel-compass-websocket ></accel-compass-websocket>
+
 	<div>
 		<h2>Sensors</h2>
 		<div><h3>View</h3>
-			<img src="http://192.168.1.13:8080/?action=stream" width="320" height="240"/>
-			<img src="http://192.168.1.13:8090/?action=stream" width="320" height="240"/>
+			<stereo-img srcLeft="http://192.168.1.13:8080/?action=stream" srcRight="http://192.168.1.13:8090/?action=stream" width="640" height="480"></stereo-img>
 		</div>
 			
 		<div><h3>Depth</h3>
