@@ -68,7 +68,7 @@ app.get('/eyes.mjpeg', function(request, res) {
 //for controls & sensors
 require('coffee-script');
 var Robot = require('./server/robot');
-var robot = new Robot();
+var body = new Robot();
 
 
 var io = require('socket.io').listen(server);
@@ -82,7 +82,7 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('rotation', function (message) {
 	  console.log("rotation: " , message);
-    rotateHead(message.x,message.y);
+    body.rotateHead(message.x,message.y);
 	});
 
 	socket.on('message', function (message) {
@@ -91,13 +91,13 @@ io.sockets.on('connection', function (socket) {
 	  {
 	  	var move = message.value;
 	  	console.log("rotate left fin to",move);
-	  	robot.rotateLeftFin(move);
+	  	body.rotateLeftFin(move);
 	  }
 	  if(message.command == "right")
 	  {
 	  	var move = message.value;
 	  	console.log("rotate right fin to",move);
-	  	robot.rotateRightFin(move);
+	  	body.rotateRightFin(move);
 	  }
 	  
 	  
@@ -105,20 +105,20 @@ io.sockets.on('connection', function (socket) {
 	  {
 	  	var move = message.value;
 	  	console.log("rotate caudal fin segment1 to",move);
-	  	robot.rotateCaudalSeg1(move);
+	  	body.rotateCaudalSeg1(move);
 	  }
 	  if(message.command == "caudSeg2")
 	  {
 	  	var move = message.value;
 	  	console.log("rotate caudal fin segment2 to",move);
-	  	robot.rotateCaudalSeg2(move);
+	  	body.rotateCaudalSeg2(move);
 	  }
 	  
 	   if(message.command == "headLight")
 	  {
 	  	var intensity = message.value;
 	  	console.log("seting light intensity",intensity);
-	  	robot.setLight(intensity);
+	  	body.setLight(intensity);
 	  }
 	  
 	  
@@ -126,14 +126,14 @@ io.sockets.on('connection', function (socket) {
 	  {
 	  	var move = message.value;
 	  	console.log("turning",move);
-	  	robot.turn(move);
+	  	body.turn(move);
 	  }
 	  
 	  if(message.command == "dive")
 	  {
 	  	var move = message.value;
 	  	console.log("diving",move);
-	  	robot.dive(move);
+	  	body.dive(move);
 	  }
 	  //socket.broadcast.emit('message', data);
 	});
